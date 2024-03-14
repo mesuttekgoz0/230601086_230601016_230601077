@@ -76,6 +76,10 @@ C = 43 için ; C ≡ 43 ^ 13 (mod 119) ≡ 8 (mod119)
 
 Şifre Çözme
 
+Antik yunanda, Polybius ismindeki kişi tarafından bulunan iki boyutlu bir tahtaya dayalı şifreleme sistemidir.
+
+Bu sistemin özelliği, alfabedeki harflerin, iki boyutlu bir tabloya yerleştirilmesi ve ardından bu tablodaki satır ve sütun numaralarına göre okunmasıdır.
+
 Kullanıcıdan alınan gizli anahtar ile mesaj çözümlenmeye başlanır .
 
 M ≡ C ^ d (mod n ) (1)
