@@ -1,97 +1,107 @@
 #include <iostream>
-#include <locale.h>
-#include <math.h>
-#include <string.h>
-#include <ctime>
-
+#include <cctype>
+#include <string>
+#include <fstream>
 using namespace std;
-int asal_kontrol(int a){
-  int durum = 1;
-
-
-  for (int i = 2; i < a; i++){
-
-    if (a % i == 0){
-      cout << "asal olmayan sayı girdiniz. "<<endl;
-      durum = 0;
-      return false;
+string Sifreleme(string metin);
+string Cozme(string sifreliMetin);
+int main()
+{
+    cout<<"hello worlddddda";
+    string metin;
+    string sec;   
+    cout<<"------------------------------------"<<endl;
+    cout<<"Polybius Sifreleme ve Cozme Programi"<<endl;
+    cout<<"------------------------------------"<<endl;
+    cout<<"1 - Metni sifrelemek mi istersiniz?"<<endl;
+    cout<<"2 - Metni cozmek mi istersiniz?"<<endl;
+    cout<<"(1/2): ";
+    cin>>sec;
+    if(sec == "1")
+    {
+        cout<<"Sifrelemek istediginiz metni giriniz:";
+        cin>> metin;
+        cout<<"Sifreli metin:"<<Sifreleme(metin)<<endl;
     }
-
-  }
-
-
-  return true;
+    else if(sec == "2")
+    {
+        cout<<"Cozmek istediginiz metni giriniz:";
+        cin>>metin;
+        cout<<"Cozulmus metin:" << Cozme(metin)<<endl;
+    }
+    else
+    {
+        cout<<"Gecersiz!"<<endl;
+    } 
+    return 0;
 }
-int OBEB(int x,int y){
-  int min= fmin(x,y);
-  int obeb=1;
-  for(int i=2;i<=min;i++){
-    if (x%i==0&&y%i==0)
-    obeb=i;
+string Sifreleme(string metin)
+{
+    char harf;
+    string sifreliMetin;
+    string polybiusKaresi[5] = {
+        "ABCDE",
+        "FGHIK",
+        "LMNOP",
+        "QRSTU",
+        "VWXYZ"
+    };
+    
+    for(char harf : metin)
+    {
+        harf = toupper(harf);
+        
+        if(isalpha(harf))
+        {
+            if(harf == 'J')
+                harf = 'I';
 
-  }
-  return obeb;
+            for(int i = 0; i < 5; i++)
+            {
+                for(int j = 0; j < 5; j++)
+                {
+                    if(polybiusKaresi[i][j] == harf)
+                    {
+                        sifreliMetin = sifreliMetin + to_string(i+1);
+                        sifreliMetin = sifreliMetin + to_string(j+1);
+                    }
+                }
+            }
+        }
+        else if (harf == ' ')
+        {
+            sifreliMetin = sifreliMetin + ' ';
+        }
+    }   
+    return sifreliMetin;
 }
 
-int main (){
-setlocale(LC_ALL, "Turkish");
-int n,e,p,q,phi;
-int dizi;
-float d;
-string metin;
-int chptext;
-bas:
-cout<<"1. asal sayiyi giriniz:"; cin>>p;
-cout<<"2. asal sayiyi giriniz:"; cin>>q;
-if (asal_kontrol(p)==false||asal_kontrol(q)==false){
-  cout<<"lütfen asal sayı olmasına dikkat ediniz. "<<endl;
-  goto bas;
+string Cozme(string sifreliMetin)
+{
+    string metin;
+    string polybiusKaresi[5] = {
+        "ABCDE",
+        "FGHIK",
+        "LMNOP",
+        "QRSTU",
+        "VWXYZ"
+    };
+    
+    for(int i = 0; i < sifreliMetin.length(); i = i + 2)
+    {
+        if(sifreliMetin[i] == ' ')
+        {
+            metin = metin + " ";
+            continue;
+        }
+        int satir = sifreliMetin[i] - '1';  
+        int sutun = sifreliMetin[i+1] - '1';
+
+        if(satir >= 0 && satir < 5 && sutun >=0 && sutun < 5)
+        {
+            metin = metin + polybiusKaresi[satir][sutun];
+        }
+    }
+    return metin;
 }
-n=p*q;
-phi=(p-1)*(q-1);
-cout<<"Lütfen açık anahtarınız için aşağıdaki sayılardan birini seçin."<<endl;
-for (int j=2;j<phi;j++){
-if (OBEB(phi,j)==1)
-cout<<j<<" ";
 
-}
-cout<<endl;
-cin>>e;
-for (int i=0;i<phi;i++){
- d=(1+i*phi)/e;
- if (d-(int)d==0){
-  break;
- }
- 
- 
- }
- cout<<"d:"<<d;
- cout<<"şifrelenecek metni giriniz:";
- getline(cin, metin);
- int index=0,a;
- while (index<metin.length()){
-  char chars = metin[index];
-  int ascii = chars;
-  index++;
-  a=pow(ascii,e);
-  chptext=a%n;
-
-  cout<<chptext<<" ";
- }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- return 0;
-}
